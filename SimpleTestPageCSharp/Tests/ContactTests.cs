@@ -26,6 +26,7 @@ namespace SimpleTestPageCSharp.Tests
             Assert.AreEqual("Contact", _contactPageObject.GetHeaderName());
         }
 
+
         [TestCleanup]
         public void Cleanup()
         {

@@ -15,6 +15,9 @@ namespace SimpleTestPageCSharp.Pages
         public IWebElement Header { get; set; }
         public IWebElement Content { get; set; }
 
+        private ContactFormPageOject _contactFormPageOject;
+
+
         public ContactPageObject(IWebDriver driver)
         {
             _driver = driver;
@@ -32,5 +35,6 @@ namespace SimpleTestPageCSharp.Pages
         {
             return new TopMenuPageObject(_driver);
         }
+
     }
 }
