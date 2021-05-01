@@ -1,6 +1,4 @@
-﻿using OpenQA.Selenium;
-
-namespace SimpleTestPageCSharp.Models
+﻿namespace SimpleTestPageCSharp.Models
 {
     public class PostModel
     {
@@ -12,6 +10,4 @@ namespace SimpleTestPageCSharp.Models
         public string Date { get; set; }
         public string TimeToRead { get; set; }
     }
-
-
 }

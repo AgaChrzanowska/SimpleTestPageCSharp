@@ -1,7 +1,7 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
+using SimpleTestPageCSharp.Common;
 using SimpleTestPageCSharp.Pages;
 
 namespace SimpleTestPageCSharp.Tests
@@ -9,38 +9,37 @@ namespace SimpleTestPageCSharp.Tests
     [TestClass]
     public class AboutTests
     {
-        IWebDriver _driver = new ChromeDriver();
-        AboutPageObject _aboutPageObject;
+        private IWebDriver _driver = new ChromeDriver();
+
+        private AboutPageObject _aboutPageObject => new AboutPageObject(_driver);
+        private MasterPageObject _masterPageObject => new MasterPageObject(_driver);
 
         [TestInitialize]
         public void SetUp()
         {
-            _driver.Navigate().GoToUrl("https://courseofautomationtesting.wordpress.com/about/");
-            _aboutPageObject = new AboutPageObject(_driver);
+            _driver.Navigate().GoToUrl(Config.HOME_URL);
+
+            var aboutTabNumber = 2;
+           _masterPageObject.SelectTopMenuItem(aboutTabNumber);
         }
 
         [TestMethod]
         public void Schould_H1Title_Be_About()
         {
-            Assert.AreEqual("About", _aboutPageObject.GetH1Title());
+            Assert.AreEqual("About", _aboutPageObject.H1.Text);
         }
 
         [TestMethod]
-        public void Schould_Box_Exist()
+        public void Box_Should_Exist()
         {
             Assert.IsNotNull(_aboutPageObject.Box);
         }
 
         [TestMethod]
-        public void Check_AdvertPlace_Exist()
+        public void AddAnotherPage_Link_Should_Lead_To_New_Page()
         {
-            Assert.IsTrue(_aboutPageObject.GetAdvertText().StartsWith("Advertisements"));
-        }
-
-        [TestMethod]
-        public void Check_Footer_Text()
-        {
-            Assert.AreEqual("Create a free website or blog at WordPress.com.", _aboutPageObject.GetFooterText());
+            var addPageLink = _aboutPageObject.GetAddAnotherPageLink();
+            Assert.IsTrue(addPageLink.Contains("://wordpress.com/"));
         }
 
         [TestCleanup]

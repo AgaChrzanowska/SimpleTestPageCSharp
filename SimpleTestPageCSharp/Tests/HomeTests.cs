@@ -7,27 +7,27 @@ using SimpleTestPageCSharp.Pages;
 namespace SimpleTestPageCSharp.Tests
 {
     [TestClass]
-    public class ContactTests
+    public class HomeTests
+
     {
         private IWebDriver _driver = new ChromeDriver();
 
-        private ContactPageObject _contactPageObject => new ContactPageObject(_driver);
-        private MasterPageObject _masterPageObject => new MasterPageObject(_driver);
-
+        private StartPageObject _startPageObjectWithoutPageFactory => new StartPageObject(_driver);
+        private MasterPageObject _menuPageObject => new MasterPageObject(_driver);
 
         [TestInitialize]
         public void SetUp()
         {
             _driver.Navigate().GoToUrl(Config.HOME_URL);
 
-            var contactTabNumber = 3;
-            _masterPageObject.SelectTopMenuItem(contactTabNumber);
+            var homeTabNumber = 1;
+            _menuPageObject.SelectTopMenuItem(homeTabNumber);
         }
 
         [TestMethod]
-        public void HeaderName_Should_Be_Contact()
+        public void Posts_Count_Should_Be_10()
         {
-            Assert.AreEqual("Contact", _contactPageObject.GetHeaderName());
+            Assert.AreEqual(10, _startPageObjectWithoutPageFactory.GetPosts().GetPostsCount());
         }
 
         [TestCleanup]

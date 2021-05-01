@@ -1,63 +1,49 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
+using SimpleTestPageCSharp.Common;
 using SimpleTestPageCSharp.Models;
 using SimpleTestPageCSharp.Pages;
-using SimpleTestPageCSharp.Pages.Fragments;
 
 namespace SimpleTestPageCSharp.Tests
 {
     [TestClass]
     public class PostsTests
     {
-        IWebDriver _driver = new ChromeDriver();
-        PostsPageObject _postsPageObject;
+        private IWebDriver _driver = new ChromeDriver();
+
+        private PostsPageObject _postsPageObject => new PostsPageObject(_driver);
+        private MasterPageObject _masterPageObject => new MasterPageObject(_driver);
 
         [TestInitialize]
         public void SetUp()
         {
-            _driver.Navigate().GoToUrl("https://courseofautomationtesting.wordpress.com/");
-            _postsPageObject = new PostsPageObject(_driver);
+            _driver.Navigate().GoToUrl(Config.HOME_URL);
+
+            var homeTabNumber = 1;
+            _masterPageObject.SelectTopMenuItem(homeTabNumber);
         }
 
         [TestMethod]
-        public void Schould_PostsCount_Be_7()
-        {
-            PostModel pm = _postsPageObject.GetPostModelByIndex(0);
-            Assert.AreEqual(7, _postsPageObject.GetPostsCount());
-        }
-
-        [TestMethod]
-        public void Schould_FirstPostName_Be_Test()
-        {
-            // TODO:   wrong assertion 
-            Assert.AreEqual("Test", _postsPageObject.GetPostModelByIndex(0).Title); 
-        }
-
-        [TestMethod]
-        public void CheckTitle_FirstPost()
+        public void FIrst_Post_Name_Should_Be_Valid()
         {
             Assert.AreEqual("Test", _postsPageObject.GetPostModelByIndex(0).Title);
         }
+
         [TestMethod]
-        public void Schould_Author_AllPosts_Be_Learnautomation()
+        public void All_Posts_Author_Name_Should_Be_Learnautomation()
         {
-            List<PostModel> allPosts = _postsPageObject.GetAllPostModels();
-
+            var allPosts = _postsPageObject.GetAllPostModels();
             Predicate<PostModel> predicate = post => post.Author == "learnautomationn";
-
-            bool hasTheSamePosterName = allPosts.TrueForAll(predicate);
-
-            bool sss = allPosts.Exists(p => p.Content.StartsWith("A"));
+            var hasTheSamePosterName = allPosts.TrueForAll(predicate);
 
             Assert.AreEqual(true, hasTheSamePosterName);
         }
 
         [TestMethod]
-        public void Check_Content_First_Post()
+        public void First_Post_Content_Should_Be_Valid()
         {
             Assert.AreEqual("New post", _postsPageObject.GetPostModelByIndex(0).Content);
         }

@@ -1,27 +1,20 @@
 ﻿using OpenQA.Selenium;
 using SimpleTestPageCSharp.Models;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace SimpleTestPageCSharp.Pages.Fragments
+namespace SimpleTestPageCSharp.Pages
 {
     public class PostsPageObject
     {
-        public IWebDriver _driver { get; set; }
+        public IWebDriver _driver;
+        public IList<IWebElement> Posts => _driver.FindElements(By.CssSelector("div#primary main.site-main article"));
 
-        public IList<IWebElement> Posts { get; set; }
-
-        private List<PostModel> _postModels;
+        private List<PostModel> _postModels = new List<PostModel>();
 
         public PostsPageObject(IWebDriver driver)
         {
             _driver = driver;
-
-            Posts = _driver.FindElements(By.CssSelector("div#primary main.site-main article"));
-            _postModels = new List<PostModel>();
             InitPostModel();
         }
 
@@ -30,8 +23,8 @@ namespace SimpleTestPageCSharp.Pages.Fragments
 
             for (int i = 0; i < Posts.Count; i++)
             {
-                IWebElement post = Posts.ElementAt(i);
-                PostModel postModel = new PostModel();
+                var post = Posts.ElementAt(i);
+                var postModel = new PostModel();
 
                 postModel.Title = post.FindElement(By.CssSelector("header h1 a")).Text;
                 postModel.Content = post.FindElement(By.CssSelector("div p")).Text;
@@ -50,11 +43,6 @@ namespace SimpleTestPageCSharp.Pages.Fragments
             return Posts.Count();
         }
 
-        public IWebElement GetPostByIndex(int index)
-        {
-            return Posts.ElementAt(index);
-        }
-
         public PostModel GetPostModelByIndex(int index)
         {
             return _postModels.ElementAt(index);
@@ -65,6 +53,4 @@ namespace SimpleTestPageCSharp.Pages.Fragments
             return _postModels;
         }
     }
-
-
 }
